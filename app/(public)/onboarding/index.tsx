@@ -3,11 +3,11 @@ import { ScrollView, View, Text, Button, Dimensions, StyleSheet } from 'react-na
 import { Image } from 'expo-image';
 import { Colors } from "@/colors";
 import OnboardingImage from '@/components/OnboardingImage';
-import { Link } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router, Link } from 'expo-router';
+
 
 const {height, width } = Dimensions.get('window');
-import { router } from 'expo-router';
 
 export default function OnboardingScreen() {
 
@@ -27,10 +27,7 @@ export default function OnboardingScreen() {
     };
 
 
-  const completeOnboarding = async () => {
-    await AsyncStorage.setItem('onboardingSeen', 'true');
-    router.replace('/(public)/sign-in');
-  };
+  
 
   return (
       <View style={styles.container}>
@@ -80,7 +77,8 @@ export default function OnboardingScreen() {
             onPress={handlePreviousPage}
             disabled={currentPage === 0}
           /> */}
-          { currentPage === 1 ? <Button title="Get Started" onPress={completeOnboarding} />
+          { currentPage === 1 ? <Link href="/(public)/sign-in">Get Started</Link>
+           //<Button title="Get Started" onPress={completeOnboarding} />
             :  <Button
             title="Next"
             onPress={handleNextPage}
@@ -104,8 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttons: {
-    /*flexDirection: 'row',
-    justifyContent: 'center',*/
     padding: 20,
     position: 'absolute',
     left: '50%',

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Colors } from '@/colors';
 import { Dimensions } from 'react-native';
-import { router, Link } from 'expo-router';
+import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -13,11 +13,11 @@ const {height, width } = Dimensions.get('window');
 export default function SignInScreen() {
   const { login, isLoading } = useAuth();
   const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleLogin = async () => {
     try {
-      await login(name, password);
+      await login('user@example.com', 'password');
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -50,16 +50,15 @@ export default function SignInScreen() {
 
                       <Text style={styles.onboardingText}>Password</Text>
                       <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8,}}
-                        placeholder="password"
-                        value={password}
-                        onChangeText={setPassword}
+                        placeholder="Enter your email"
+                        value={email}
+                        onChangeText={setEmail}
                         keyboardType="email-address"
                       />
 
                       <View>
-                        <Button title="Forgot password?" onPress={() => router.push('/(public)/forgetPassword')} />
                         <Button title="Login" onPress={handleLogin} disabled={isLoading} />
-                        <Link href="/(public)/signup">Create account</Link>
+                        <Button title="Sign up" onPress={completeOnboarding} />
                       </View>  
                   </View>
                   </View>                  
