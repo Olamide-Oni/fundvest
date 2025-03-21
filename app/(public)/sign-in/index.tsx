@@ -12,12 +12,12 @@ const {height, width } = Dimensions.get('window');
 
 export default function SignInScreen() {
   const { login, isLoading } = useAuth();
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      await login(name, password);
+      await login(email, password);
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -28,12 +28,7 @@ export default function SignInScreen() {
     router.replace('/(public)/sign-in');
   };
 
- /*return (
-    <View>
-      <Text>Sign In</Text>
-      <Button title="Login" onPress={handleLogin} disabled={isLoading} />
-    </View>
-  ); */
+
    return (
         <View style={styles.container}>      
             <View style={[styles.page, {backgroundColor: Colors.fence, paddingTop: '15%'}]}>
@@ -43,17 +38,16 @@ export default function SignInScreen() {
                     <View style={{ padding: 20 }}>
                       <Text style={styles.onboardingText}>Username or Email</Text>
                       <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8,}}
-                        placeholder="Enter your name"
-                        value={name}
-                        onChangeText={setName}
+                        placeholder="Enter your email"
+                        value={email}
+                        onChangeText={setEmail}
                       />
 
                       <Text style={styles.onboardingText}>Password</Text>
                       <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8,}}
                         placeholder="password"
                         value={password}
-                        onChangeText={setPassword}
-                        keyboardType="email-address"
+                        onChangeText={setPassword} secureTextEntry={true}
                       />
 
                       <View>
