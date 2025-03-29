@@ -1,128 +1,138 @@
-import React, { useRef, useState } from 'react';
-import { ScrollView, View, Text, Button, Dimensions, StyleSheet } from 'react-native';
-import { Image } from 'expo-image';
-import { Colors } from "@/colors";
-import OnboardingImage from '@/components/OnboardingImage';
+import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
+import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'expo-router';
+import { Colors } from "@/colors";
+import { LineChart } from "react-native-chart-kit"; // Import the chart component
 
-const {height, width } = Dimensions.get('window'); 
+const { width: screenWidth } = Dimensions.get('window'); // Get the screen width dynamically
 
-export default function Home() {
-  
-  
-  const scrollViewRef = useRef<ScrollView>(null);
-  const [currentPage, setCurrentPage] = useState(0);
-
-
-  const handleNextPage = () => {
-    const nextPage = currentPage + 1;
-    if (nextPage < 2) {
-      setCurrentPage(nextPage);
-      scrollViewRef.current?.scrollTo({
-        x: nextPage * width,
-        animated: true,
-      });
-    }
-  };
-
- /*const handlePreviousPage = () => {
-    const prevPage = currentPage - 1;
-    if (prevPage >= 0) {
-      setCurrentPage(prevPage);
-      scrollViewRef.current?.scrollTo({
-        x: prevPage * width,
-        animated: true,
-      });
-    }
-  }; */
+export default function Overview() {
+  const { user } = useAuth();
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        ref={scrollViewRef}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={(event) => {
-          const page = Math.floor(event.nativeEvent.contentOffset.x / width);
-          setCurrentPage(page);
-        }}
-      >
-        <View style={[styles.page, {backgroundColor: Colors.fence, paddingTop: '15%'}]}>
-          < View style = {{
-            display: 'flex',
-            width: '100%',
-            flex: 1,
-            justifyContent: 'space-between'
-            }}>
-              <Text style={
-                styles.onboardingText
-              }>Build You Wealth</Text>
-              <OnboardingImage />
-                   
-          </View>         
+      <View>
+        <View>
+          <Text style={styles.greetingText}>Hi, {user?.firstName}</Text>
+          <Text style={styles.welcomeText}>Welcome back</Text>
         </View>
-        <View style={[styles.page, {backgroundColor: Colors.fence, paddingTop: '15%'}]}>
-          < View style = {{
-            display: 'flex',
-            width: '100%',
-            flex: 1,
-            justifyContent: 'space-between'
-            }}>
-              <Text style={
-                styles.onboardingText
-              }>Are you ready to take control of your finances?</Text>
-              <OnboardingImage />
-                   
-          </View>         
+        <Link href=''></Link>
+      </View>
+
+      {/* Horizontal ScrollView for full-width cards */}
+      <ScrollView
+        horizontal
+        pagingEnabled // Enables snapping to each card
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContainer}
+      >
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Total Balance</Text>
+          <Text style={styles.cardValue}>#50,000</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Total Invested</Text>
+          <Text style={styles.cardValue}>#100,000</Text>
         </View>
       </ScrollView>
 
-      <View style={styles.buttons}>
-          {/*<Button
-          title="Previous"
-          onPress={handlePreviousPage}
-          disabled={currentPage === 0}
-        /> */}
-        { currentPage === 1 ? <Link href="/home"> Home
-          </Link> :  <Button
-          title="Next"
-          onPress={handleNextPage}
-          disabled={currentPage === 2}
-        /> }
-       
+      {/* Chart Section */}
+      <View style={styles.chartContainer}>
+        <Text style={styles.chartTitle}>Investment Performance</Text>
+        <LineChart
+          data={{
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [
+              {
+                data: [5000, 10000, 15000, 20000, 25000, 30000],
+              },
+            ],
+          }}
+          width={screenWidth - 32} // Chart width
+          height={220} // Chart height
+          yAxisLabel="#"
+          yAxisSuffix="k"
+          chartConfig={{
+            backgroundColor: "#1e2227",
+            backgroundGradientFrom: "#1e2227",
+            backgroundGradientTo: "#25292e",
+            decimalPlaces: 0,
+            color: (opacity = 1) => `rgba(0, 255, 0, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 8,
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#fff",
+            },
+          }}
+          style={{
+            marginVertical: 16,
+            borderRadius: 8,
+          }}
+        />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  
   container: {
     flex: 1,
+    backgroundColor: '#25292e',
+    padding: 16,
   },
-  page: {
-    width,
-    height: '100%',
-    justifyContent: 'center',
+  greetingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.lightGreen,
+    textAlign: 'left',
+    marginTop: 50,
+  },
+  welcomeText: {
+    fontSize: 14,
+    color: '#fff',
+    textAlign: 'left',
+    marginBottom: 16,
+  },
+  scrollContainer: {
     alignItems: 'center',
   },
-  buttons: {
-    /*flexDirection: 'row',
-    justifyContent: 'center',*/
-    padding: 20,
-    position: 'absolute',
-    left: '50%',
-    transform: [{ translateX: -50 }],
-    bottom: '10%',
+  card: {
+    width: screenWidth - 32, // Full width minus padding
+    backgroundColor: '#1e2227',
+    borderRadius: 8,
+    padding: 16,
+    marginHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  onboardingText: {
-    lineHeight: 39,
-    fontWeight: 'semibold',
-    fontSize: 30,
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  cardValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
     color: Colors.lightGreen,
-    textAlign: 'center'
   },
- 
-  
+  chartContainer: {
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  chartTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 16,
+  },
 });

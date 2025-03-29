@@ -8,7 +8,8 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 type User = {
   id: string;
   email: string;
-  name?: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 type AuthContextType = {
@@ -26,11 +27,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
- 
   const isAuthenticated = !!user;
+
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    const logInUrl = `${apiUrl}/login`;
 
   // Initialize auth state on app load
   useEffect(() => {
+    
     const initializeAuth = async () => {
       const token = await SecureStore.getItemAsync('authToken');
       if (token) {
@@ -70,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Login method
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(logInUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width } = Dimensions.get('window');
 
 export default function SignInScreen() {
+  
   const { login, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,14 +38,15 @@ export default function SignInScreen() {
                   <View style={styles.formContainer}>
                     <View style={{ padding: 20 }}>
                       <Text style={styles.onboardingText}>Username or Email</Text>
-                      <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8,}}
+                      <TextInput style={styles.input}
                         placeholder="Enter your email"
                         value={email}
                         onChangeText={setEmail}
+                        keyboardType="email-address"
                       />
 
                       <Text style={styles.onboardingText}>Password</Text>
-                      <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8,}}
+                      <TextInput style={styles.input}
                         placeholder="password"
                         value={password}
                         onChangeText={setPassword} secureTextEntry={true}
@@ -107,4 +109,12 @@ const styles = StyleSheet.create({
           marginHorizontal: 'auto',
           padding: 20
   },
+  input: {
+    height: 40, 
+    borderColor: 'gray', 
+    borderWidth: 1, 
+    marginBottom: 10, 
+    paddingHorizontal: 8,
+    color: Colors.lightGreen,
+  }
 });

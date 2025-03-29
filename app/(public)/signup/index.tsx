@@ -1,4 +1,4 @@
-import { View, TextInput, Text, Button, Alert } from 'react-native';
+import { View, TextInput, Text, Button, Alert, KeyboardAvoidingView, Platform, } from 'react-native';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -21,18 +21,11 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  //const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
-
   const handleSignUp = async () => {
     if (!firstName || !lastName || !phoneNumber || !email || !password || !confirmPassword) {
       Alert.alert('Error', 'All fields are required!');
       return;
     }
-
-   /* if (!isValidEmail(email)) {
-      Alert.alert('Error', 'Please enter a valid email address!');
-      return;
-    } */
 
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match!');
@@ -63,9 +56,13 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={styles.container}>      
-      <View style={[styles.page, { backgroundColor: Colors.fence, paddingTop: '15%' }]}>        
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+      <View style={[styles.page, { backgroundColor: Colors.fence }]}>
         <Text style={styles.onboardingTextHeader}>Create Account</Text>
+        
         <View style={styles.formContainer}>
           <Text style={styles.onboardingText}>First Name</Text>
           <TextInput style={styles.input} placeholder="First name" value={firstName} onChangeText={setFirstName} />
@@ -86,16 +83,23 @@ export default function SignUpScreen() {
           <TextInput style={styles.input} placeholder="Confirm password" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={true} />
 
           <Button title="Sign Up" onPress={handleSignUp} />
-        </View>        
-      </View>   
-    </View>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
   page: { width, height: '100%', justifyContent: 'center', alignItems: 'center' },
-  input: { height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8 },
+  input: {
+    height: 40, 
+    borderColor: 'gray', 
+    borderWidth: 1, 
+    marginBottom: 10, 
+    paddingHorizontal: 8,
+    color: Colors.lightGreen,
+  },
   onboardingTextHeader: { fontSize: 30, color: Colors.lightGreen, textAlign: 'center' },
   onboardingText: { fontSize: 15, color: Colors.lightGreen, paddingBottom: 10 },
   formContainer: { width: '100%', padding: 20 }

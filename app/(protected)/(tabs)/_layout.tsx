@@ -1,12 +1,42 @@
-// app/(public)/_layout.tsx
-import { Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
 
-export default function PublicLayout() {
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+
+export default function TabLayout() {
   return (
-   <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+    <Tabs
+        screenOptions={{
+            tabBarActiveTintColor: '#ffd33d',
+            headerStyle: {
+            backgroundColor: '#25292e',
+            },
+            headerShadowVisible: false,
+            headerTintColor: '#fff',
+            tabBarStyle: {
+            backgroundColor: '#25292e',
+            },
+        }}
+    >
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: 'Home',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="invest"
+        options={{
+          title: 'Invest',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
-

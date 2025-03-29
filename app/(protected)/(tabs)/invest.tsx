@@ -7,7 +7,7 @@ import { Link } from 'expo-router';
 
 const {height, width } = Dimensions.get('window'); 
 
-export default function Profile() {
+export default function Invest() {
   
   
   const scrollViewRef = useRef<ScrollView>(null);
