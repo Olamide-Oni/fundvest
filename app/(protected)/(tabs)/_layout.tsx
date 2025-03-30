@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
-
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Colors } from "@/colors";
 
 
 export default function TabLayout() {
@@ -14,7 +14,8 @@ export default function TabLayout() {
             headerShadowVisible: false,
             headerTintColor: '#fff',
             tabBarStyle: {
-            backgroundColor: '#25292e',
+           // backgroundColor: '#25292e',
+            backgroundColor: Colors.lightGreen,
             },
         }}
     >
@@ -32,6 +33,7 @@ export default function TabLayout() {
         name="invest"
         options={{
           title: 'Invest',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
           ),
@@ -40,3 +42,4 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+ 

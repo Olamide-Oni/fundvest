@@ -81,7 +81,8 @@ export default function Overview() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    //backgroundColor: '#25292e',
+    backgroundColor: Colors.cyprus,
     padding: 16,
   },
   greetingText: {
