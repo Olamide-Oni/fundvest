@@ -12,6 +12,7 @@ const { height, width } = Dimensions.get('window');
 export default function SignUpScreen() {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const signUpUrl = `${apiUrl}/signup`;
+  
 
   const { login, isLoading } = useAuth();
   const [firstName, setFirstName] = useState('');
