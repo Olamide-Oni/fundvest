@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!user;
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const logInUrl = `${apiUrl}/login`;
+  const logInUrl = `${apiUrl}/login`;
 
   // Initialize auth state on app load
   useEffect(() => {
