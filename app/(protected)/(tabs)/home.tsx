@@ -3,7 +3,8 @@ import { View, StyleSheet, Text, ScrollView, Dimensions, Button, Modal, TextInpu
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'expo-router';
 import { Colors } from "@/colors";
-import { LineChart } from "react-native-chart-kit";
+import PerformanceChart from "@/components/PerformanceChart";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -41,15 +42,16 @@ export default function Overview() {
   return (
     <View style={styles.container}>
       <View>
-        <View style={{
-          paddingHorizontal: 16,
-        }}>
-          <Text style={styles.greetingText}>Hi, {user?.firstName}</Text>
-          <Text style={styles.welcomeText}>Welcome back</Text>
-        </View>
-        
-        <Link href=''></Link>
-      </View>
+      <View style={{ paddingHorizontal: 16, paddingVertical: 18, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View>
+      <Text style={styles.greetingText}>Hi, {user?.firstName}</Text>
+      <Text style={styles.welcomeText}>Welcome back</Text>
+    </View>
+    <Link href="/notifications">
+      <Ionicons name="notifications-outline" size={24} color={Colors.void} />
+    </Link>
+  </View>
+      
 
       {/* Horizontal ScrollView for full-width cards */}
       <ScrollView
@@ -75,45 +77,13 @@ export default function Overview() {
           </View>
         </View>
       </ScrollView>
+      </View>
 
       {/* Chart Section */}
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>Investment Performance</Text>
-        <LineChart
-          data={{
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-            datasets: [
-              {
-                data: [5000, 10000, 15000, 20000, 25000, 30000],
-              },
-            ],
-          }}
-          width={screenWidth - 32}
-          height={220}
-          yAxisLabel="#"
-          yAxisSuffix="k"
-          chartConfig={{
-            backgroundColor: "#1e2227",
-            backgroundGradientFrom: "#1e2227",
-            backgroundGradientTo: "#25292e",
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(0, 255, 0, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 8,
-            },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "#fff",
-            },
-          }}
-          style={{
-            marginVertical: 16,
-            borderRadius: 8,
-          }}
-        />
-      </View>
+      <PerformanceChart
+        data={[5000, 10000, 15000, 20000, 25000, 30000]}
+        labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]}
+      />
 
       {/* Modal for Add Funds */}
       <Modal
@@ -218,7 +188,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: screenWidth - 50,
-    backgroundColor: Colors.lightGreen,
+    backgroundColor: Colors.caribbean,
     borderRadius: 8,
     padding: 16,
     marginHorizontal: 16,
@@ -234,13 +204,13 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: Colors.cyprus,
+    color: Colors.honeyDew,
     marginBottom: 8,
   },
   cardValue: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: Colors.cyprus,
+    color: Colors.honeyDew,
   },
   addFundsButton: {
     backgroundColor: Colors.void,
@@ -352,7 +322,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   investmentCard: {
-    backgroundColor: Colors.caribbean,
+    backgroundColor: Colors.lBlue,
     padding: 16,
     borderRadius: 8,
     shadowColor: "#000",
