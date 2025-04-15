@@ -5,7 +5,8 @@ import { router } from 'expo-router';
 // Use environment variables for API URL
 //const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 // In your API calls (AuthContext.tsx)
-const API_BASE = "http://172.20.10.3:5000"; // Use this exact IP
+const API_BASE = process.env.EXPO_PUBLIC_API_BASE; // Use this exact IP
+
 
 type User = {
   id: string;
@@ -32,10 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!user;
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    //const logInUrl = `${apiUrl}/login`;
-    const logInUrl = `${API_BASE}/login`;
-    
-    
+  const logInUrl = `${API_BASE}/login`;
 
   // Initialize auth state on app load
   useEffect(() => {
@@ -60,7 +58,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchUserData = async () => {
     try {
       const token = await SecureStore.getItemAsync('authToken');
-      //const response = await fetch(`${API_URL}/me`, {
       const response = await fetch(`${API_BASE}/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -115,7 +112,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!token) return false;
 
     try {
-      //const response = await fetch(`${API_URL}/validate-token`, {
       const response = await fetch(`${API_BASE}/validate-token`, {
         headers: { Authorization: `Bearer ${token}` },
       });

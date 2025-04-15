@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { ScrollView, View, Text, Button, Dimensions, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Button, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { Colors } from "@/colors";
 import OnboardingImage from '@/components/OnboardingImage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, Link } from 'expo-router';
-
+import { Ionicons } from '@expo/vector-icons'; // Import icons from Expo
 
 const {height, width } = Dimensions.get('window');
 
@@ -72,19 +72,24 @@ export default function OnboardingScreen() {
         </ScrollView>
   
         <View style={styles.buttons}>
-            {/*<Button
-            title="Previous"
-            onPress={handlePreviousPage}
-            disabled={currentPage === 0}
-          /> */}
-          { currentPage === 1 ? <Link href="/(public)/sign-in">Get Started</Link>
-           //<Button title="Get Started" onPress={completeOnboarding} />
-            :  <Button
-            title="Next"
-            onPress={handleNextPage}
-            disabled={currentPage === 2}
-          /> }
-         
+          {currentPage === 1 ? (
+            <TouchableOpacity
+              style={styles.getStartedButton}
+              onPress={() => router.push('/(public)/sign-in')}
+            >
+              <Text style={styles.buttonText}>Get Started</Text>
+              <Ionicons name="arrow-forward" size={20} color="#fff" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={handleNextPage}
+              disabled={currentPage === 2}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+              <Ionicons name="arrow-forward" size={20} color="#fff" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );
@@ -102,11 +107,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttons: {
-    padding: 20,
+    width: '100%', // Ensure the container spans the full width
     position: 'absolute',
-    left: '50%',
-    transform: [{ translateX: -50 }],
-    bottom: '10%',
+    bottom: '10%', // Position the buttons at the bottom
+    alignItems: 'center', // Center the buttons horizontally
+    justifyContent: 'center', // Center the content within the container
+    padding: 20,
   },
   onboardingText: {
     lineHeight: 39,
@@ -115,4 +121,26 @@ const styles = StyleSheet.create({
     color: Colors.lightGreen,
     textAlign: 'center'
   },   
+  getStartedButton: {
+    backgroundColor: Colors.void,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  nextButton: {
+    backgroundColor: Colors.void,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    marginRight: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });
