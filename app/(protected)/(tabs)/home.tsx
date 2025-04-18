@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, ScrollView, Dimensions, Button, Modal, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity, Modal, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'expo-router';
 import { Colors } from "@/colors";
@@ -19,6 +19,7 @@ export default function Overview() {
   const [depositAmount, setDepositAmount] = useState<number | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [inputAmount, setInputAmount] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0); // Track the active card index
 
   const handleAddFunds = () => {
     setModalVisible(true); // Show the modal
@@ -39,44 +40,64 @@ export default function Overview() {
     alert(`Account Name: FundVest Investments\nAccount Number: 1234567890\nAmount: #${amount}`);
   };
 
+  const handleScroll = (event: any) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollPosition / (screenWidth - 50));
+    setActiveIndex(index);
+  };
+
   return (
     <View style={styles.container}>
       <View>
-      <View style={{ paddingHorizontal: 16, paddingVertical: 18, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-    <View>
-      <Text style={styles.greetingText}>Hi, {user?.firstName}</Text>
-      <Text style={styles.welcomeText}>Welcome back</Text>
-    </View>
-    <Link href="/notifications">
-      <Ionicons name="notifications-outline" size={24} color={Colors.void} />
-    </Link>
-  </View>
-      
-
-      {/* Horizontal ScrollView for full-width cards */}
-      <ScrollView
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-      >
-        <View style={styles.card}>
+        <View style={{ paddingHorizontal: 16, paddingVertical: 18, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <View>
-            <Text style={styles.cardTitle}>Total Balance</Text>
-            <Text style={styles.cardValue}>#50,000</Text>
+            <Text style={styles.greetingText}>Hi, {user?.firstName}</Text>
+            <Text style={styles.welcomeText}>Welcome back</Text>
           </View>
+          <Link href="/notifications">
+            <Ionicons name="notifications-outline" size={24} color={Colors.void} />
+          </Link>
+        </View>
 
-          <TouchableOpacity style={styles.addFundsButton} onPress={handleAddFunds}>
-            <Text style={styles.addFundsButtonText}>Add Funds</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.card}>
-          <View>
-            <Text style={styles.cardTitle}>Total Invested</Text>
-            <Text style={styles.cardValue}>#100,000</Text>
+        {/* Horizontal ScrollView for full-width cards */}
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+        >
+          <View style={styles.card}>
+            <View>
+              <Text style={styles.cardTitle}>Total Balance</Text>
+              <Text style={styles.cardValue}>#50,000</Text>
+            </View>
+
+            <TouchableOpacity style={styles.addFundsButton} onPress={handleAddFunds}>
+              <Text style={styles.addFundsButtonText}>Add Funds</Text>
+            </TouchableOpacity>
           </View>
+          <View style={styles.card}>
+            <View>
+              <Text style={styles.cardTitle}>Total Invested</Text>
+              <Text style={styles.cardValue}>#100,000</Text>
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Swipe Indicator */}
+        <View style={styles.indicatorContainer}>
+          {[0, 1].map((index) => (
+            <View
+              key={index}
+              style={[
+                styles.indicator,
+                activeIndex === index && styles.activeIndicator,
+              ]}
+            />
+          ))}
         </View>
-      </ScrollView>
       </View>
 
       {/* Chart Section */}
@@ -223,6 +244,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  indicatorContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 8,
+  },
+  indicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.darkGray,
+    marginHorizontal: 4,
+  },
+  activeIndicator: {
+    backgroundColor: Colors.caribbean,
   },
   chartContainer: {
     marginTop: 16,
