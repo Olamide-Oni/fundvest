@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { ScrollView, View, Text, Button, FlatList, Dimensions, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Button, FlatList, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { Colors } from "@/colors";
-import { Link } from 'expo-router';
-import { FlipInEasyX } from 'react-native-reanimated';
+import { Link, useRouter } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const {height, width } = Dimensions.get('window'); 
+const { height, width } = Dimensions.get('window');
 
 type Plan = {
   image: string,
@@ -14,24 +14,27 @@ type Plan = {
   returns: string
   minimum: number,
   investors: number,
+  duration: number
 }
 
 const DATA = [
   {
-    image:'image',
+    image: 'image',
     title: '6-months vesting plan',
     openings: "Invest Now",
     returns: "20%",
     minimum: 50000,
-    investors: 130
+    investors: 130,
+    duration: 6
   },
   {
-    image:'image',
+    image: 'image',
     title: '12-months vesting plan',
     openings: "Invest Now",
     returns: "30%",
     minimum: 100000,
-    investors: 130
+    investors: 130,
+    duration: 12
   }
 ]
 
@@ -43,7 +46,7 @@ const Item = ({ item }: { item: Plan }) => (
     />
     <View style={styles.itemContent}>
       <Text style={styles.itemTitle}>{item.title}</Text>
-      <Text style={styles.itemReturns}>{item.returns} in 6 months</Text>
+      <Text style={styles.itemReturns}>{item.returns} in {item.duration} months</Text>
       <View style={styles.itemDetails}>
         <Text style={styles.itemDetailText}>Minimum: #{item.minimum}</Text>
         <Text style={styles.itemDetailText}>{item.investors} investors</Text>
@@ -53,9 +56,16 @@ const Item = ({ item }: { item: Plan }) => (
 );
 
 export default function Invest() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.onboardingText}>Explore Investments</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.push('/(protected)/(tabs)/(invest)')}>
+          <Ionicons name="arrow-back" size={24} color={Colors.fence} />
+        </TouchableOpacity>
+        <Text style={styles.onboardingText}>Explore Investments</Text>
+      </View>
       <FlatList
         data={DATA}
         keyExtractor={(item, index) => index.toString()} // Ensure unique keys
@@ -67,23 +77,28 @@ export default function Invest() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.cyprus,
+    backgroundColor: Colors.honeyDew,
     flex: 1,
     padding: 16,
   },
-  onboardingText: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 70,
+    marginBottom: 16,
+  },
+  onboardingText: {
     lineHeight: 29,
     fontWeight: '600',
     fontSize: 20,
-    color: Colors.lightGreen,
+    color: Colors.void,
     textAlign: 'center',
-    marginBottom: 16,
+    flex: 1, // Center the text
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.honeyDew,
+    backgroundColor: Colors.cyprus,
     borderRadius: 12,
     padding: 16,
     marginVertical: 10,
@@ -105,12 +120,12 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: Colors.fence,
+    color: Colors.honeyDew,
     marginBottom: 8,
   },
   itemReturns: {
     fontSize: 14,
-    color: Colors.void,
+    color: Colors.honeyDew,
     marginBottom: 8,
   },
   itemDetails: {
@@ -119,6 +134,6 @@ const styles = StyleSheet.create({
   },
   itemDetailText: {
     fontSize: 12,
-    color: Colors.darkGray,
+    color: Colors.lightGreen,
   },
 });

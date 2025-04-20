@@ -5,6 +5,7 @@ import { Link } from 'expo-router';
 import { Colors } from "@/colors";
 import PerformanceChart from "@/components/PerformanceChart";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import YourInvestmentSection from "@/components/YourInvestmentSection";
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -165,23 +166,7 @@ export default function Overview() {
       </Modal>
 
       {/* Your Investment Section */}
-      <View style={styles.investmentContainer}>
-        <Text style={styles.investmentTitle}>Your Investment</Text>
-        <View style={styles.investmentCard}>
-          <View style={styles.investmentDetailsContainer}>
-            <Text style={styles.investmentPlanTitle}>{selectedInvestment.title}</Text>
-            <Text style={styles.investmentDetail}>
-              Returns: {selectedInvestment.returns}
-            </Text>
-            <Text style={styles.investmentDetail}>
-              Minimum Investment: #{selectedInvestment.minimum}
-            </Text>
-            <Text style={styles.investmentDetail}>
-              Investors: {selectedInvestment.investors}
-            </Text>
-          </View>        
-        </View>
-      </View>
+      <YourInvestmentSection/>
     </View>
   );
 }
@@ -211,7 +196,7 @@ const styles = StyleSheet.create({
     width: screenWidth - 50,
     backgroundColor: Colors.caribbean,
     borderRadius: 8,
-    padding: 16,
+    padding: 24,
     marginHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -223,7 +208,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 10,
     fontWeight: 'bold',
     color: Colors.honeyDew,
     marginBottom: 8,
@@ -345,40 +330,5 @@ const styles = StyleSheet.create({
     color: Colors.void,
     fontWeight: 'bold',    
   },
-  investmentContainer: {
-    marginTop: 24,
-    padding: 16,
-    backgroundColor: Colors.honeyDew,
-    borderRadius: 8,
-  },
-  investmentTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: Colors.cyprus,
-    marginBottom: 16,
-  },
-  investmentCard: {
-    backgroundColor: Colors.lBlue,
-    padding: 16,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  investmentDetailsContainer: {
-    marginBottom: 16,
-  },
-  investmentPlanTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: Colors.fence,
-    marginBottom: 8,
-  },
-  investmentDetail: {
-    fontSize: 14,
-    color: Colors.darkGray,
-    marginBottom: 4,
-  },
+  
 });

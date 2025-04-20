@@ -6,6 +6,7 @@ import OnboardingImage from '@/components/OnboardingImage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons'; // Import icons from Expo
+import OnboardingImage2 from '@/components/OnboardingImage2';
 
 const {height, width } = Dimensions.get('window');
 
@@ -65,7 +66,8 @@ export default function OnboardingScreen() {
                 <Text style={
                   styles.onboardingText
                 }>Are you ready to take control of your finances?</Text>
-                <OnboardingImage />
+                {/* <OnboardingImage /> */}
+                <OnboardingImage2 />
                      
             </View>         
           </View>
